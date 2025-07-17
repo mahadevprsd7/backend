@@ -5,7 +5,10 @@ const cors = require('cors');
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://frontend-rho-three-18.vercel.app/'
+}));
+
 app.use(express.json());
 
 app.use('/api/tasks', require('./routes/tasks'));
