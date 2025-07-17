@@ -23,12 +23,26 @@ router.post('/', async (req, res) => {
 
 // PUT to update task (toggle or edit)
 router.put('/:id', async (req, res) => {
-  const task = await Task.findByIdAndUpdate(
-    req.params.id,
-    req.body,
-    { new: true }
-  );
-  res.json(task);
+  try {
+    console.log('PUT /tasks/:id');
+    console.log('ID:', req.params.id);
+    console.log('Body:', req.body);
+
+    const task = await Task.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+
+    if (!task) {
+      return res.status(404).json({ error: 'Task not found' });
+    }
+
+    res.json(task);
+  } catch (err) {
+    console.error('Update error:', err);
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // DELETE task
