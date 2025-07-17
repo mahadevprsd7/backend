@@ -10,9 +10,15 @@ router.get('/', async (req, res) => {
 
 // POST new task
 router.post('/', async (req, res) => {
-  const task = new Task({ text: req.body.text });
-  await task.save();
-  res.status(201).json(task);
+  console.log('Received body:', req.body);
+  try {
+    const task = new Task({ text: req.body.text });
+    await task.save();
+    res.status(201).json(task);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // PUT to update task (toggle or edit)
